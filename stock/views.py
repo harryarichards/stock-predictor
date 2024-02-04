@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+from predictor import predict_tomorrow
+
+from .models import predictor
+
+
+def get_increase_prob(request):
+    prob = predict_tomorrow(predictor=predictor)
+    return HttpResponse(prob)

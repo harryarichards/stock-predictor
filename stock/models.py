@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+from predictor import get_predictor
+
+
+predictor = get_predictor()
