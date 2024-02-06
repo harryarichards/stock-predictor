@@ -64,7 +64,7 @@ def predict_tomorrow(predictor=None, **kwargs):
         predictor = get_predictor(**kwargs)
 
     data = get_data(ticker=predictor.ticker, num_years=predictor.num_years)
-    data, _ = get_features(data=data)
-    data = data.tail(1)
-    prediction = predictor.model.predict_proba(data[predictor.features])[:, 1][0]
-    return prediction
+    predict_data, _ = get_features(data=data.copy())
+    predict_data = predict_data.tail(1)
+    prediction = predictor.model.predict_proba(predict_data[predictor.features])[:, 1][0]
+    return prediction, data
