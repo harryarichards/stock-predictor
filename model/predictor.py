@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score
 
-from data import get_data, get_features
+from model.data import get_data, get_features
 
 
 class StockPricePredictor:
@@ -37,7 +37,7 @@ class StockPricePredictor:
     def backtest(self, start=2500, step=250):
         all_tests = []
         for i in range(start, self.data.shape[0], step):
-            train_data = self.data.iloc[0:i].copy()
+            train_data = self.data.iloc[:i].copy()
             test_data = self.data.iloc[i : (i + step)].copy()
             self.train(train_data=train_data)
             preds = self.get_predictions(data=test_data)
@@ -66,5 +66,7 @@ def predict_tomorrow(predictor=None, **kwargs):
     data = get_data(ticker=predictor.ticker, num_years=predictor.num_years)
     predict_data, _ = get_features(data=data.copy())
     predict_data = predict_data.tail(1)
-    prediction = predictor.model.predict_proba(predict_data[predictor.features])[:, 1][0]
+    prediction = predictor.model.predict_proba(predict_data[predictor.features])[:, 1][
+        0
+    ]
     return prediction, data

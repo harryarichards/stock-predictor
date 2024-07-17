@@ -1,11 +1,13 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 
-from predictor import predict_tomorrow
+from model.predictor import predict_tomorrow
 
 from .models import predictor
 
+def index(response):
+    return HttpResponse("stock predictor root url")
 
-def get_increase_prob(request):
+def predict_tomorrow(request):
     prob, data = predict_tomorrow(predictor=predictor)
     data = data.to_dict(orient="records")
     object = {"prob": prob, "data": data}
